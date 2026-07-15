@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrating 30 Years of Love | Mom & Dad</title>
+    
+    <!-- Meta tags for SEO & Link Sharing -->
+    <meta name="description" content="A digital anniversary card celebrating 30 years of marriage for Mom & Dad. July 14, 1996 - July 14, 2026.">
+    <meta property="og:title" content="Celebrating 30 Years of Love">
+    <meta property="og:description" content="Happy 30th Anniversary, Mom & Dad!">
+    <meta property="og:type" content="website">
+
+    <!-- Elegant Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Ambient Background Particles Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Background Music Audio -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-ambient-piano-loop-85.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Floating Audio Control -->
+    <button id="audio-toggle" class="audio-control hidden" aria-label="Toggle music">
+        <span class="icon">🔇</span>
+    </button>
+
+    <!-- Outer Envelope Container -->
+    <div id="envelope-wrapper">
+        <div class="envelope-container">
+            <div class="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-paper">
+                    <div class="preview-text">
+                        <span class="script-font">For Mom & Dad</span>
+                        <span class="date-text">July 14, 2026</span>
+                    </div>
+                </div>
+                <div class="envelope-front"></div>
+                <div class="envelope-top"></div>
+                <!-- Wax Seal -->
+                <div class="wax-seal" id="wax-seal" role="button" tabindex="0" aria-label="Open Anniversary Card">
+                    <div class="seal-inner">
+                        <span class="seal-number">30</span>
+                    </div>
+                </div>
+            </div>
+            <p class="instruction-text">Click the golden seal to open</p>
+        </div>
+    </div>
+
+    <!-- Main Card Content (revealed after envelope opens) -->
+    <main id="card-content" class="card-hidden">
+        <div class="card-paper">
+            <!-- Decorative Border -->
+            <div class="border-design outer-border">
+                <div class="border-design inner-border">
+                    
+                    <!-- Header Section -->
+                    <header class="card-header">
+                        <p class="pre-title">1996 – 2026</p>
+                        <h1 class="main-title">Thirty Years of Love</h1>
+                        <p class="subtitle">Celebrating the 30th Anniversary of</p>
+                        <p class="parents-names script-font">Mom & Dad</p>
+                        <div class="divider">
+                            <span class="dot"></span>
+                            <span class="line"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </header>
+
+                    <!-- Personal Heartfelt Message -->
+                    <section class="card-message">
+                        <p class="paragraph fade-in-el">Thirty years ago, on <strong class="date-highlight">July 14, 1996</strong>, you began your journey together as one. Through three decades of shared dreams, laughter, challenges, and beautiful milestones, you have built a life and a family rooted in devotion, patience, and warmth.</p>
+                        <p class="paragraph fade-in-el">Thank you for showing us what commitment and true partnership look like. Your marriage is not just a milestone, but our greatest inspiration and a beautiful testament to a timeless love story.</p>
+                        <p class="paragraph fade-in-el">Happy 30th Anniversary! Here's to celebrating thirty years of marriage, and to all the beautiful years yet to come.</p>
+                        <p class="signature script-font fade-in-el">With all our love,</p>
+                    </section>
+
+                    <!-- Gallery Section -->
+                    <section class="card-gallery-section">
+                        <h2 class="section-title">A Journey in Photos</h2>
+                        <p class="section-subtitle">Moments from a beautiful life together</p>
+                        
+                        <div class="polaroid-grid" id="polaroid-grid">
+                            <!-- Polaroid 1 -->
+                            <div class="polaroid" data-index="0">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_0425.jpg" alt="Mom & Dad Photo 1" loading="lazy">
+                                    <div class="caption">Cherished Moments</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 2 -->
+                            <div class="polaroid" data-index="1">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_0837.jpg" alt="Mom & Dad Photo 2" loading="lazy">
+                                    <div class="caption">Laughter & Joy</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 3 -->
+                            <div class="polaroid" data-index="2">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_1525.jpg" alt="Mom & Dad Photo 3" loading="lazy">
+                                    <div class="caption">Side by Side</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 4 -->
+                            <div class="polaroid" data-index="3">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_1912.jpg" alt="Mom & Dad Photo 4" loading="lazy">
+                                    <div class="caption">Our Foundation</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 5 -->
+                            <div class="polaroid" data-index="4">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_1920.jpg" alt="Mom & Dad Photo 5" loading="lazy">
+                                    <div class="caption">Timeless Love</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 6 -->
+                            <div class="polaroid" data-index="5">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_2887.jpg" alt="Mom & Dad Photo 6" loading="lazy">
+                                    <div class="caption">Together Always</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 7 -->
+                            <div class="polaroid" data-index="6">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_6375.jpg" alt="Mom & Dad Photo 7" loading="lazy">
+                                    <div class="caption">Shared Dreams</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 8 -->
+                            <div class="polaroid" data-index="7">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_7086.jpg" alt="Mom & Dad Photo 8" loading="lazy">
+                                    <div class="caption">Heart to Heart</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 9 -->
+                            <div class="polaroid" data-index="8">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_9721.jpg" alt="Mom & Dad Photo 9" loading="lazy">
+                                    <div class="caption">Beautiful Memories</div>
+                                </div>
+                            </div>
+                            <!-- Polaroid 10 -->
+                            <div class="polaroid" data-index="9">
+                                <div class="polaroid-inner">
+                                    <img src="photos/IMG_9874.jpg" alt="Mom & Dad Photo 10" loading="lazy">
+                                    <div class="caption">Forever & Always</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Footer Section -->
+                    <footer class="card-footer">
+                        <p class="anniversary-date">July 14, 2026</p>
+                        <p class="copyright">With Love & Gratitude</p>
+                    </footer>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Polaroid Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal" aria-hidden="true" role="dialog">
+        <button class="lightbox-close" aria-label="Close Lightbox">&times;</button>
+        <button class="lightbox-prev" aria-label="Previous image">&#10094;</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Enlarged gallery image">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+        <button class="lightbox-next" aria-label="Next image">&#10095;</button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

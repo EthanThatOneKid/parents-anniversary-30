@@ -1,0 +1,875 @@
+/* ==========================================================================
+   Design System & Variables
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --color-bg-dark: #121110;
+    --color-bg-card: #fcfbf9;
+    --color-bg-envelope: #1e1b18;
+    --color-primary-text: #2d2825;
+    --color-secondary-text: #665f5a;
+    
+    /* Gold Palette */
+    --color-gold-light: #f5e7c8;
+    --color-gold-base: #d4af37;
+    --color-gold-mid: #c5a880;
+    --color-gold-dark: #9e7f53;
+    --gold-gradient: linear-gradient(135deg, #c5a880 0%, #f5e7c8 50%, #9e7f53 100%);
+    --gold-text-gradient: linear-gradient(135deg, #8a6f44 0%, #c5a880 50%, #8a6f44 100%);
+    
+    /* Fonts */
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-script: 'Pinyon Script', cursive;
+    
+    /* Shadows */
+    --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0 15px 35px rgba(0, 0, 0, 0.08);
+    --shadow-luxury: 0 20px 50px rgba(158, 127, 83, 0.15);
+    --shadow-polaroid: 0 12px 28px rgba(0, 0, 0, 0.07);
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg-dark);
+    color: var(--color-primary-text);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Particle Background */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Common Typography Utilities */
+.script-font {
+    font-family: var(--font-script);
+}
+
+/* ==========================================================================
+   Audio Controls
+   ========================================================================== */
+.audio-control {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(252, 251, 249, 0.9);
+    border: 1px solid var(--color-gold-mid);
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.audio-control:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-luxury);
+    background-color: #ffffff;
+}
+
+.audio-control.hidden {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+}
+
+.audio-control .icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* ==========================================================================
+   Interactive Envelope (Intro State)
+   ========================================================================== */
+#envelope-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background-color: var(--color-bg-dark);
+    transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), visibility 1.2s;
+}
+
+#envelope-wrapper.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.envelope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 1200px;
+}
+
+.envelope {
+    position: relative;
+    width: 420px;
+    height: 280px;
+    background-color: var(--color-bg-envelope);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.envelope:hover {
+    transform: translateY(-8px);
+}
+
+/* Envelope Layers */
+.envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1715;
+    border-radius: 6px;
+}
+
+/* Paper letter inside the envelope */
+.envelope-paper {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    width: 390px;
+    height: 250px;
+    background: #fdfbf7;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #f4ece1;
+}
+
+.preview-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(197, 168, 128, 0.3);
+    padding: 30px 40px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.preview-text .script-font {
+    font-size: 2.2rem;
+    color: var(--color-gold-dark);
+}
+
+.preview-text .date-text {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-secondary-text);
+}
+
+.envelope-front {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-right: 210px solid #23201d;
+    border-left: 210px solid #23201d;
+    border-top: 140px solid transparent;
+    border-bottom: 140px solid #1c1917;
+    border-radius: 6px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.envelope-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-right: 210px solid transparent;
+    border-left: 210px solid transparent;
+    border-top: 140px solid #282421;
+    z-index: 4;
+    transform-origin: top;
+    transition: transform 0.8s ease-in-out;
+    pointer-events: none;
+}
+
+/* Wax Seal */
+.wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -20%) scale(1);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #d4af37 0%, #b8860b 80%, #8a6f44 100%);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wax-seal:hover {
+    transform: translate(-50%, -20%) scale(1.1);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.seal-inner {
+    width: 48px;
+    height: 48px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.seal-number {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    user-select: none;
+}
+
+.instruction-text {
+    margin-top: 30px;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    color: var(--color-gold-mid);
+    text-transform: uppercase;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+/* Envelope Open Animations */
+.envelope.open .envelope-top {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.open .wax-seal {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(0.5);
+    pointer-events: none;
+}
+
+.envelope.open .envelope-paper {
+    transform: translateY(-160px);
+}
+
+/* ==========================================================================
+   Anniversary Card Container
+   ========================================================================== */
+#card-content {
+    width: 90%;
+    max-width: 950px;
+    margin: 40px auto;
+    z-index: 2;
+    position: relative;
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 1.8s cubic-bezier(0.25, 1, 0.5, 1), transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#card-content.card-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.card-paper {
+    background-color: var(--color-bg-card);
+    background-image: radial-gradient(rgba(240, 235, 225, 0.4) 1px, transparent 0);
+    background-size: 24px 24px;
+    padding: 30px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-luxury);
+}
+
+/* Borders */
+.border-design {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.outer-border {
+    border: 1px solid var(--color-gold-mid);
+    padding: 10px;
+}
+
+.inner-border {
+    border: 2px solid var(--color-gold-mid);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Corner ornaments */
+.inner-border::before, .inner-border::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--color-gold-mid);
+}
+
+.inner-border::before {
+    top: 5px;
+    left: 5px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.inner-border::after {
+    bottom: 5px;
+    right: 5px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Header section */
+.card-header {
+    text-align: center;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pre-title {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    letter-spacing: 0.3em;
+    color: var(--color-gold-dark);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.main-title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--color-primary-text);
+    line-height: 1.1;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary-text);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.parents-names {
+    font-size: 4.5rem;
+    color: var(--color-gold-dark);
+    line-height: 1;
+    margin: 15px 0 25px 0;
+    background: var(--gold-text-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 2px 4px rgba(212, 175, 55, 0.05);
+}
+
+/* Divider ornament */
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 200px;
+    margin-top: 10px;
+}
+
+.divider .line {
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(90deg, transparent, var(--color-gold-mid), transparent);
+}
+
+.divider .dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--color-gold-mid);
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   Heartfelt Message Area
+   ========================================================================== */
+.card-message {
+    max-width: 680px;
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.card-message .paragraph {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--color-primary-text);
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.card-message .paragraph.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.date-highlight {
+    font-weight: 500;
+    color: var(--color-gold-dark);
+}
+
+.signature {
+    font-size: 3rem;
+    color: var(--color-gold-dark);
+    margin-top: 40px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1s ease 0.4s, transform 1s ease 0.4s;
+}
+
+.signature.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Photo Gallery Section
+   ========================================================================== */
+.card-gallery-section {
+    width: 100%;
+    border-top: 1px dashed rgba(197, 168, 128, 0.3);
+    padding-top: 60px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--color-primary-text);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.section-subtitle {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--color-secondary-text);
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+/* Polaroid Collage Grid */
+.polaroid-grid {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    justify-items: center;
+}
+
+/* Individual Polaroid Styling */
+.polaroid {
+    background-color: #ffffff;
+    padding: 14px 14px 24px 14px;
+    border: 1px solid #ede7db;
+    box-shadow: var(--shadow-polaroid);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: zoom-in;
+    width: 250px;
+    transform: rotate(var(--rot));
+    position: relative;
+    z-index: 2;
+}
+
+.polaroid-inner {
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 12px;
+}
+
+.polaroid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.1) contrast(0.95);
+    transition: transform 0.6s ease;
+}
+
+.polaroid:hover {
+    transform: scale(1.06) rotate(0deg) translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(158, 127, 83, 0.2);
+    z-index: 10;
+    border-color: var(--color-gold-mid);
+}
+
+.polaroid:hover img {
+    transform: scale(1.05);
+}
+
+.polaroid .caption {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--color-secondary-text);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Footer Section
+   ========================================================================== */
+.card-footer {
+    text-align: center;
+    border-top: 1px solid rgba(197, 168, 128, 0.2);
+    width: 100%;
+    padding-top: 40px;
+    margin-top: 40px;
+}
+
+.anniversary-date {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--color-gold-dark);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: rgba(102, 95, 90, 0.6);
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Lightbox Modal
+   ========================================================================== */
+.lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 17, 16, 0.95);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.lightbox-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 80%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lightbox-img {
+    max-width: 100%;
+    max-height: 70vh;
+    border: 10px solid #ffffff;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    border-radius: 2px;
+    object-fit: contain;
+    transform: scale(0.95);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lightbox-modal.active #lightbox-img {
+    transform: scale(1);
+}
+
+.lightbox-caption {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Lightbox Buttons */
+.lightbox-close, .lightbox-prev, .lightbox-next {
+    position: absolute;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.lightbox-close {
+    top: 30px;
+    right: 35px;
+    font-size: 3.5rem;
+}
+
+.lightbox-prev {
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.lightbox-next {
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ==========================================================================
+   Animations & Keyframes
+   ========================================================================== */
+@keyframes pulseGlow {
+    0% {
+        opacity: 0.6;
+        text-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+}
+
+/* ==========================================================================
+   Media Queries & Responsiveness
+   ========================================================================== */
+
+/* Mobile Adaptations */
+@media (max-width: 600px) {
+    body {
+        align-items: flex-start;
+    }
+    
+    .envelope-container {
+        padding: 20px 0;
+    }
+
+    .envelope {
+        width: 320px;
+        height: 220px;
+    }
+
+    .envelope-paper {
+        width: 290px;
+        height: 195px;
+    }
+
+    .preview-text {
+        padding: 10px 15px;
+    }
+
+    .preview-text .script-font {
+        font-size: 1.6rem;
+    }
+
+    .preview-text .date-text {
+        font-size: 0.75rem;
+    }
+
+    .envelope-front {
+        border-right-width: 160px;
+        border-left-width: 160px;
+        border-top-width: 110px;
+        border-bottom-width: 110px;
+    }
+
+    .envelope-top {
+        border-right-width: 160px;
+        border-left-width: 160px;
+        border-top-width: 110px;
+    }
+
+    .envelope.open .envelope-paper {
+        transform: translateY(-100px);
+    }
+
+    .wax-seal {
+        width: 50px;
+        height: 50px;
+    }
+
+    .seal-inner {
+        width: 40px;
+        height: 40px;
+    }
+
+    .seal-number {
+        font-size: 1.2rem;
+    }
+
+    /* Card Details */
+    #card-content {
+        width: 95%;
+        margin: 15px auto;
+    }
+
+    .card-paper {
+        padding: 15px;
+    }
+
+    .inner-border {
+        padding: 25px 10px;
+    }
+
+    .main-title {
+        font-size: 2.2rem;
+    }
+
+    .parents-names {
+        font-size: 3rem;
+        margin: 10px 0 15px 0;
+    }
+
+    .card-message {
+        margin-bottom: 40px;
+    }
+
+    .card-message .paragraph {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    .signature {
+        font-size: 2.2rem;
+        margin-top: 25px;
+    }
+
+    /* Grid adaptation */
+    .polaroid-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 5px;
+    }
+
+    .polaroid {
+        width: 100% !important;
+        padding: 8px 8px 16px 8px;
+    }
+
+    .polaroid .caption {
+        font-size: 0.8rem;
+        margin-top: 6px;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .section-subtitle {
+        margin-bottom: 30px;
+    }
+
+    .lightbox-prev, .lightbox-next {
+        font-size: 1.8rem;
+    }
+    
+    .lightbox-prev {
+        left: 15px;
+    }
+    
+    .lightbox-next {
+        right: 15px;
+    }
+}
+
+/* Small screen single column for polaroids */
+@media (max-width: 400px) {
+    .polaroid-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .polaroid {
+        max-width: 250px;
+    }
+}
